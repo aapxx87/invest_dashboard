@@ -1,9 +1,31 @@
-// создаем строку из тикеров массива tickerArr, которая будет вставляться в запрос АПИ по получению котировок
-import {renderSpinner} from "./spinner";
-import {investmentPortfolio} from "../../data_invest";
-import {componentStockData} from "../stock_card/stock_card";
-import {componentTotalBalances} from "../stock_summary/stock_summary";
+import {investmentPortfolio} from './data_invest'
+import {componentTotalBalances} from './stock_summary'
+import {renderSpinner} from './spinner'
+import {component_row_stock} from "./row-stock";
+import {x} from './performing_history/performing_2020'
+import {calc2021Performance} from './performing_history/performing_2021'
 
+import '../styles/style.css'
+
+
+const containerPortfolioQuotes = document.querySelector('.container-portfolio-quotes')
+
+
+// нужно для рассчета всего суммарного значнеия инвестиций на текущий момент
+const portfolioSumArr = []
+
+const portfolioSumStartArr = []
+
+// тикеры для получения котировок по ним через API + рубль
+const tickerArr = ['nvda', 'rblx', 'aapl', 'fxit.me', 'yndx.me', 'tcsg.me', 'mtch', 'fb', 'u', 'orcl', 'RUB=X']
+
+// массив только с акциями
+const tickerArrOnlyStocks = ['nvda', 'rblx', 'aapl', 'fxit.me', 'yndx.me', 'tcsg.me', 'mtch', 'fb', 'orcl', 'u']
+
+
+
+
+// создаем строку из тикеров массива tickerArr, которая будет вставляться в запрос АПИ по получению котировок
 const create_StocksStringForAPI = function (arr) {
 
     // апдейтнули тикеры в формат для запроса
@@ -37,6 +59,7 @@ const get_API_StocksQuotes = async function (formattedQuotesString) {
     })
 
     const data = await response.json()
+    console.log(data)
 
     // получили массив с данными по акциям из массива аргументов
     const stockQuotesArr = data.quoteResponse.result;
@@ -86,6 +109,9 @@ const calculate_StocksData = async function (arr) {
 
     // текущая цена бенчмарка (вытягиваем из всего списка котировок полученных через АПИ по всем инструментам)
     const lastBMPrice = get_BenchmarkLastPrice(stocksPlusRubQuotes)
+
+
+    const stockCalcDataArr = []
 
 
 
@@ -139,6 +165,8 @@ const calculate_StocksData = async function (arr) {
         // формируем объект с данными, которые передадим в компоненту для формирвования HTML по каждой акции
         const stockDataObj = {
             pnl: pnl,
+            buyDate: currentStock[0].buyDate,
+            buyYear: currentStock[0].buyYear,
             currency: currentStock[0].currency,
             ticker: currentStock[0].stockTicker.toUpperCase(),
             volume: currentStock[0].volume,
@@ -150,6 +178,9 @@ const calculate_StocksData = async function (arr) {
             benchMarkDeltaPercent: benchmarkLastPrice.toFixed(0),
             benchMarkName: "FXIT.ME",
         }
+
+
+        stockCalcDataArr.push(stockDataObj)
 
         // формируем объект с данными, которые передадим в компоненту для формирвования итоговых балансов
         totalDataObj = {
@@ -164,13 +195,108 @@ const calculate_StocksData = async function (arr) {
         elem.style.display = 'none'
 
 
-        // вставляем компоненту по каждой конкретной акции
-        componentStockData(stockDataObj)
+
+        component_row_stock(stockDataObj)
 
     })
+
+
+    // console.log(stockCalcDataArr)
+
 
     // всавляем компоненту с балансами тотальными
     componentTotalBalances(totalDataObj)
 
 
+
 }
+
+
+
+
+
+// получаем по АПИ объекты с кучей данных по интересующему списку инструментов
+get_API_StocksQuotes(create_StocksStringForAPI(tickerArr))
+
+
+// вычисляем на основне полученных данных по АПИ и стартовых данных нужные показатели + рендерим компоненты в интерфейс
+calculate_StocksData(tickerArrOnlyStocks)
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
