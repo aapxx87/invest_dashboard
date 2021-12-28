@@ -1,0 +1,154 @@
+.graph {
+    width: 900px;
+    height: 380px;
+    /*border: 1px solid #7C7D80;*/
+    position: relative;
+}
+
+/* ОСИ КООРДИАТ */
+
+.x-line {
+    position: absolute;
+    width: 800px;
+    height: 1px;
+    background: var(--border-ginger);
+    bottom: 100px;
+}
+
+.y-line {
+    position: absolute;
+    width: 1px;
+    height: 360px;
+    background: var(--border-ginger);
+    left: 70px;
+    bottom: 10px;
+}
+
+
+/* ОСИ с %*/
+
+.horis-line-metric-300,
+.horis-line-metric-200,
+.horis-line-metric-100,
+.horis-line-metric-minus-100 {
+    position: absolute;
+    width: 730px;
+    height: 1px;
+    border: 1px dashed var(--border-horis-line);
+    left: 70px;
+}
+
+
+.horis-line-metric-300 {
+    bottom: 320px;
+}
+
+.horis-line-metric-200 {
+    bottom: 240px;
+}
+
+.horis-line-metric-100 {
+    bottom: 170px;
+}
+
+.horis-line-metric-minus-100 {
+    bottom: 30px;
+}
+
+.horis-line-metric-100::after {
+    content: "100 %";
+    position: absolute;
+    left: -45px;
+    top: -8px;
+    color: #7C7D80;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.horis-line-metric-200::after {
+    content: "200 %";
+    position: absolute;
+    left: -45px;
+    top: -8px;
+    color: #7C7D80;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.horis-line-metric-300::after {
+    content: "300 %";
+    position: absolute;
+    left: -45px;
+    top: -8px;
+    color: #7C7D80;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+.horis-line-metric-minus-100::after {
+    content: "-100 %";
+    position: absolute;
+    left: -50px;
+    top: -8px;
+    color: #7C7D80;
+    font-size: 13px;
+    font-weight: 300;
+}
+
+
+/* БОКСЫ АКЦИЙ */
+
+.stocks {
+    display: flex;
+    position: absolute;
+    bottom: 101px;
+    left: 90px;
+    width: 700px;
+    height: 120px;
+    z-index: 10;
+    align-items: flex-end;
+
+}
+
+.box-stock {
+    /*width: 60px;*/
+    /*height: 40px;*/
+    background: var(--box-stock-background);
+    /*z-index: 10;*/
+    margin-right: 33px;
+    /*transform: translateY(-20px);*/
+    display: flex;
+    justify-content: center;
+
+}
+
+.box-stock-ticker {
+    font-size: 14px;
+    font-weight: 100;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/* в */

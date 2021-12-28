@@ -1,3 +1,5 @@
+@import url(variables.css);
+
 
 @import url('stock_summary.css');
 @import url('spinner.css');
@@ -5,6 +7,7 @@
 
 @import url('row-stock.css');
 @import url('tables-title.css');
+@import url('graph.css');
 
 
 * {
@@ -17,6 +20,7 @@ body {
   background: #36383F;
   color: #fff;
   font-family: 'Roboto', sans-serif;
+  padding-bottom: 50px;
 }
 
 
@@ -29,9 +33,30 @@ body {
 }
 
 
+.container-graph-contribution {
+  display: flex;
+  max-width: 1200px;
+  height: 510px;
+  margin: 0 auto;
+  padding-top: 20px;
+  margin-bottom: 50px;
+
+}
+
+
+.container-performing-graph {
+  width: 900px;
+  /*border: 1px solid #7C7D80;*/
+}
+
+.container-contributions {
+  width: 300px;
+}
+
+
 .container-portfolio {
   display: flex;
-  margin-bottom: 50px;
+  margin-bottom: 20px;
 }
 
 

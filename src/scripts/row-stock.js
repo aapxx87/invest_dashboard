@@ -12,11 +12,11 @@ export const component_row_stock = function (obj) {
           <p class="balances-item2 ticker">${obj.ticker}</p>
           <p class="balances-item">${obj.deltaPercent} %</p>
           <p class="balances-item2">${obj.benchMarkDeltaPercent} %</p>
-          <p class="balances-item">${obj.lastPrice} $</p>
-          <p class="balances-item2 small-number">${obj.buyPrice} $</p>
+          <p class="balances-item">${obj.lastPrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
+          <p class="balances-item2 small-number">${obj.buyPrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
           <p class="balances-item2 small-number">${obj.buyDate}</p>
           <p class="balances-item2 small-number">${obj.volume}</p>
-          <p class="balances-item2 small-number">${obj.totalVolumePrice}</p>
+          <p class="balances-item2 small-number">${obj.totalVolumePrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
          </li>
         `
 
@@ -32,11 +32,11 @@ export const component_row_stock = function (obj) {
           <p class="balances-item2 ticker">${obj.ticker}</p>
           <p class="balances-item">${obj.deltaPercent} %</p>
           <p class="balances-item2">${obj.benchMarkDeltaPercent} %</p>
-          <p class="balances-item">${obj.lastPrice} $</p>
-          <p class="balances-item2 small-number">${obj.buyPrice} $</p>
+          <p class="balances-item">${obj.lastPrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
+          <p class="balances-item2 small-number">${obj.buyPrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
           <p class="balances-item2 small-number">${obj.buyDate}</p>
           <p class="balances-item2 small-number">${obj.volume}</p>
-          <p class="balances-item2 small-number">${obj.totalVolumePrice}</p>
+          <p class="balances-item2 small-number">${obj.totalVolumePrice} ${obj.currency === 'usd' ? '$' : 'P'}</p>
          </li>
         `
 

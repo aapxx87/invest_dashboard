@@ -16,6 +16,8 @@ const portfolioBalanceStart2020 = function (dataArr) {
 
     const sumStart2020Arr = []
 
+    console.log(buy2020StockArr)
+
     buy2020StockArr.forEach(function (el) {
 
         if(el.currency === 'usd') {

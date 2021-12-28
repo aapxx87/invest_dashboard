@@ -1,9 +1,11 @@
 import {investmentPortfolio} from './data_invest'
+import {b} from './graph'
 import {componentTotalBalances} from './stock_summary'
 import {renderSpinner} from './spinner'
 import {component_row_stock} from "./row-stock";
 import {x} from './performing_history/performing_2020'
 import {calc2021Performance} from './performing_history/performing_2021'
+import {addStockBoxToGraph} from './graph'
 
 import '../styles/style.css'
 
@@ -18,9 +20,6 @@ const portfolioSumStartArr = []
 
 // тикеры для получения котировок по ним через API + рубль
 const tickerArr = ['nvda', 'rblx', 'aapl', 'fxit.me', 'yndx.me', 'tcsg.me', 'mtch', 'fb', 'u', 'orcl', 'RUB=X']
-
-// массив только с акциями
-const tickerArrOnlyStocks = ['nvda', 'rblx', 'aapl', 'fxit.me', 'yndx.me', 'tcsg.me', 'mtch', 'fb', 'orcl', 'u']
 
 
 
@@ -59,7 +58,6 @@ const get_API_StocksQuotes = async function (formattedQuotesString) {
     })
 
     const data = await response.json()
-    console.log(data)
 
     // получили массив с данными по акциям из массива аргументов
     const stockQuotesArr = data.quoteResponse.result;
@@ -90,7 +88,7 @@ const get_BenchmarkLastPrice = function(arr) {
 
 
 
-const calculate_StocksData = async function (arr) {
+const calculate_StocksData = async function () {
 
     renderSpinner(containerPortfolioQuotes)
 
@@ -115,38 +113,34 @@ const calculate_StocksData = async function (arr) {
 
 
 
-    // проходимся по массиву с тикерами из портфеля и матчим их с полученными котировками по АПИ, чтобы вытянуть нужные данные
-    arr.forEach(function (el) {
+    // проходимся по массиву данных стартовых условий портфеля и матчим их с полученными котировками по АПИ, чтобы вытянуть нужные данные
+    investmentPortfolio.forEach(function (el) {
+
 
 
         // вытягиваем последнюю актуальную цену акции из объекта полученного по АПИ проходимся по массиву с полученными через API котировками и сравниваем с текущим элементом в массиве с тикерами (передаем как аргумент в функцию). Когда находим соответствие сохраняем последнюю цену в переменную  lastStockPrice
         let lastStockPrice
 
         stockQuotesArr.forEach(function (elApi) {
-            if (elApi.symbol === el.toUpperCase()) {
+            if (elApi.symbol === el.stockTicker.toUpperCase()) {
                 lastStockPrice = elApi.regularMarketPrice
             }
         })
 
 
-        //  находим объект со стартовыми данными по акции, потом потребуются для калькуляции других параметров
-        const currentStock = investmentPortfolio.filter(function (elPortfolio) {
-            return elPortfolio.stockTicker === el
-        })
+
+        const pnl = lastStockPrice - el.buyPrice
 
 
-        const pnl = lastStockPrice - currentStock[0].buyPrice
-
-
-        if (currentStock[0].currency === 'usd') {
-            portfolioSumArr.push(+(currentStock[0].volume * lastStockPrice) * rubUsdRate).toFixed(2)
-            portfolioSumStartArr.push(currentStock[0].buyPrice * currentStock[0].volume * currentStock[0].usdRubRateBuyDate)
+        if (el.currency === 'usd') {
+            portfolioSumArr.push(+(el.volume * lastStockPrice) * rubUsdRate).toFixed(2)
+            portfolioSumStartArr.push(el.buyPrice * el.volume * el.usdRubRateBuyDate)
         }
 
 
-        if (currentStock[0].currency === 'rub') {
-            portfolioSumArr.push(+(currentStock[0].volume * lastStockPrice).toFixed(2))
-            portfolioSumStartArr.push(currentStock[0].buyPrice * currentStock[0].volume)
+        if (el.currency === 'rub') {
+            portfolioSumArr.push(+(el.volume * lastStockPrice).toFixed(2))
+            portfolioSumStartArr.push(el.buyPrice * el.volume)
         }
 
         const totalInvestmentsSum = portfolioSumArr.reduce(function (acc, cur) {
@@ -159,22 +153,22 @@ const calculate_StocksData = async function (arr) {
 
 
         // считаем процентное изменение бенчмарка
-        const benchmarkLastPrice = (lastBMPrice - currentStock[0].benchMarkStartPrice)/(currentStock[0].benchMarkStartPrice/100)
+        const benchmarkLastPrice = (lastBMPrice - el.benchMarkStartPrice)/(el.benchMarkStartPrice/100)
 
 
         // формируем объект с данными, которые передадим в компоненту для формирвования HTML по каждой акции
         const stockDataObj = {
             pnl: pnl,
-            buyDate: currentStock[0].buyDate,
-            buyYear: currentStock[0].buyYear,
-            currency: currentStock[0].currency,
-            ticker: currentStock[0].stockTicker.toUpperCase(),
-            volume: currentStock[0].volume,
-            buyPrice: new Intl.NumberFormat('ru-RU').format(currentStock[0].buyPrice),
+            buyDate: el.buyDate,
+            buyYear: el.buyYear,
+            currency: el.currency,
+            ticker: el.stockTicker.toUpperCase(),
+            volume: el.volume,
+            buyPrice: new Intl.NumberFormat('ru-RU').format(el.buyPrice),
             lastPrice: new Intl.NumberFormat('ru-RU').format(lastStockPrice.toFixed(2)),
-            totalVolumePrice: new Intl.NumberFormat('ru-RU').format((currentStock[0].volume * lastStockPrice).toFixed(2)),
-            deltaMoney: new Intl.NumberFormat('ru-RU').format((pnl * currentStock[0].volume).toFixed(2)),
-            deltaPercent: ((lastStockPrice - currentStock[0].buyPrice) / (currentStock[0].buyPrice / 100)).toFixed(2),
+            totalVolumePrice: new Intl.NumberFormat('ru-RU').format((el.volume * lastStockPrice).toFixed(2)),
+            deltaMoney: new Intl.NumberFormat('ru-RU').format((pnl * el.volume).toFixed(2)),
+            deltaPercent: ((lastStockPrice - el.buyPrice) / (el.buyPrice / 100)).toFixed(2),
             benchMarkDeltaPercent: benchmarkLastPrice.toFixed(0),
             benchMarkName: "FXIT.ME",
         }
@@ -201,7 +195,7 @@ const calculate_StocksData = async function (arr) {
     })
 
 
-    // console.log(stockCalcDataArr)
+    addStockBoxToGraph(stockCalcDataArr)
 
 
     // всавляем компоненту с балансами тотальными
@@ -219,8 +213,8 @@ const calculate_StocksData = async function (arr) {
 get_API_StocksQuotes(create_StocksStringForAPI(tickerArr))
 
 
-// вычисляем на основне полученных данных по АПИ и стартовых данных нужные показатели + рендерим компоненты в интерфейс
-calculate_StocksData(tickerArrOnlyStocks)
+// вычисляем на основне полученных данных по АПИ и данных из массива с акциями + рендерим компоненты в интерфейс
+calculate_StocksData()
 
 
 

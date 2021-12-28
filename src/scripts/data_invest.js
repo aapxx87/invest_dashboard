@@ -1,5 +1,17 @@
 export const investmentPortfolio = [
     {
+        stockTicker: 'fxit.me',
+        currency: 'rub',
+        buyDate: '27.12.2021',
+        end2021Price: 1,
+        buyYear: '2021',
+        buyPrice: 12400,
+        volume: 1,
+        usdRubRateBuyDate: 73.40,
+        benchMark: 'fxit.me',
+        benchMarkStartPrice: 12400,
+    },
+    {
         stockTicker: 'orcl',
         currency: 'usd',
         buyDate: '13.12.2021',
@@ -118,5 +130,6 @@ export const investmentPortfolio = [
         usdRubRateBuyDate: 66.57,
         benchMark: 'fxit.me',
         benchMarkStartPrice: 5675,
-    }
+    },
+
 ]
