@@ -1,9 +1,7 @@
 @import url(variables.css);
 
-
 @import url('stock_summary.css');
 @import url('spinner.css');
-
 
 @import url('row-stock.css');
 @import url('tables-title.css');
@@ -44,20 +42,11 @@ body {
 }
 
 
-.container-performing-graph {
-  width: 900px;
-  /*border: 1px solid #7C7D80;*/
-}
 
 .container-contributions {
   width: 300px;
 }
 
-
-.container-portfolio {
-  display: flex;
-  margin-bottom: 20px;
-}
 
 
 .block-title {

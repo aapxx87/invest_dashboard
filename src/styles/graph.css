@@ -1,3 +1,9 @@
+.container-performing-graph {
+    width: 900px;
+    /*border: 1px solid #7C7D80;*/
+}
+
+
 .graph {
     width: 900px;
     height: 380px;
